@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Login Page</title>
+
+    <script src="https://alcdn.msauth.net/browser/2.24.0/js/msal-browser.min.js"></script>
+    
+</head>
+<body>
+
+    <h1> shobha shishodia</h1>
+    <!-- Hero Section -->
+    <div class="hero">
+    
+            <button id="loginButton" class="hero-button">Sign in to use Chatbot</button>
+              <button id="" class="hero-button">new added </button>
+  
+        
+    </div>
+
+
+    <script>
+        // Microsoft Authentication Configuration
+        const msalConfig = {
+            auth: {
+                clientId: "78fc114d-1b88-4859-9568-57267c0dd0f7",  // Replace with your client ID
+                authority: "https://login.microsoftonline.com/d70cb4db-69c4-4a49-aaf3-f1e7ac277686",  // Default authority
+                redirectUri: "https://finalhtml.onrender.com",  // Set to your redirect URI
+            },
+            cache: {
+                cacheLocation: "localStorage",  // Store the authentication result in localStorage
+                storeAuthStateInCookie: false,  // Set to true if issues in Internet Explorer
+            }
+        };
+
+        const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+        // Trigger login on clicking the "Sign in to use Chatbot" button
+        document.getElementById("loginButton").onclick = function() {
+            msalInstance.loginRedirect({
+                scopes: ["User.Read"]
+            });
+        };
+
+        // Handle redirect after login
+        msalInstance.handleRedirectPromise().then((loginResponse) => {
+            if (loginResponse) {
+                console.log("Login successful", loginResponse);
+                // Save user info to localStorage
+                localStorage.setItem("user", JSON.stringify(loginResponse.account));
+                window.location.href = "welcome.html";  // Redirect to welcome page
+            }
+        }).catch((error) => {
+            console.error("Login failed", error);
+        });
+    </script>
+
+</body>
+</html>
+
